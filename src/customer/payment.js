@@ -40,14 +40,35 @@ const Payment = () => {
             });
             const data = await response.json();
             if (response.ok) {
+                await updateOrderStatus(order.orderId);
                 alert('Payment successful!');
-                navigate('/orders');
+                navigate('/consumer/order');
             } else {
                 throw new Error(data.message || 'Payment failed');
             }
         } catch (error) {
             console.error('Error processing payment:', error);
             alert('Payment failed. Please try again.');
+        }
+    };
+
+    const updateOrderStatus = async (orderId) => {
+        try {
+            const response = await fetch(`http://localhost:5456/orders/status?orderId=${orderId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    orderStatus: 'Completed'
+                }),
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update order status');
+            }
+        } catch (error) {
+            console.error('Error updating order status:', error);
         }
     };
 

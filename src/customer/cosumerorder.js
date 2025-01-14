@@ -49,6 +49,26 @@ const ConsumerOrder = () => {
         navigate('/consumer/payment');
     };
 
+    const handleDeleteOrder = async (orderId) => {
+        try {
+            const response = await fetch(`http://localhost:5456/orders?id=${orderId}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.ok) {
+                alert('Order deleted successfully');
+                fetchAllOrders(token); // Refresh the orders list
+            } else {
+                throw new Error('Failed to delete order');
+            }
+        } catch (error) {
+            console.error('Error deleting order:', error);
+            alert('Failed to delete order. Please try again.');
+        }
+    };
+
     return (
         <div>
             <NavBar />
@@ -83,12 +103,15 @@ const ConsumerOrder = () => {
                                             </div>
                                             <div className="row my-4">
                                                 <div className="col-md-12">
-                                                    <p className="lead fw-bold mb-0" style={{ color: 'green' }}>Order Status: {order.orderStatus}</p>
+                                                    <p className="lead fw-bold mb-0" style={{ color: 'green' }}>Order Status: {order.orderStatus === 'Completed' ? 'Completed' : order.orderStatus}</p>
                                                 </div>
                                             </div>
                                             <div className="row my-4">
-                                                <div className="col-md-12 text-center">
+                                                <div className="col-md-6 text-center">
                                                     <button className="btn btn-primary" onClick={() => handleProceedToPayment(order)}>Proceed to Payment</button>
+                                                </div>
+                                                <div className="col-md-6 text-center">
+                                                    <button className="btn btn-danger" onClick={() => handleDeleteOrder(order.orderId)} disabled={order.orderStatus === 'COMPLETED'}>Delete Order</button>
                                                 </div>
                                             </div>
                                         </div>
