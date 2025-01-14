@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, IconButton, TextField, Tooltip, Stack, Divider } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
@@ -10,7 +10,8 @@ import AgricultureIcon from '@mui/icons-material/Agriculture';
 import CallIcon from '@mui/icons-material/Call';
 import EditLocationIcon from '@mui/icons-material/EditLocation';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-const FarmerProfile = ({ farmerData}) => {
+
+const FarmerProfile = ({ farmerData, role }) => {
   const [editableField, setEditableField] = useState(null);
   const [editedValue, setEditedValue] = useState('');
   const [profile, setProfile] = useState(farmerData);
@@ -23,26 +24,31 @@ const FarmerProfile = ({ farmerData}) => {
   };
 
   useEffect(() => {
-      const savedToken = localStorage.getItem('authToken');
-      if (savedToken) {
-        setToken(savedToken);
-      } else {
-        alert('No token found. Please log in first.');
-        navigate('/login');
-      }
-    }, [navigate]);
+    const savedAuth = JSON.parse(localStorage.getItem('authData'));
+    if (savedAuth && savedAuth.token) {
+      setToken(savedAuth.token);
+    } else {
+      alert('No token found. Please log in first.');
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    setProfile(farmerData);
+  }, [farmerData]);
 
   const handleSave = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:5456/profile/farmer?attribute=${editableField}&value=${editedValue}`,
-        {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const apiUrl = role === 'FARMER'
+        ? `http://localhost:5456/profile/farmer?attribute=${editableField}&value=${editedValue}`
+        : `http://localhost:5456/profile/customer?attribute=${editableField}&value=${editedValue}`;
+
+      const response = await fetch(apiUrl, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const responseData = await response.json();
 
       if (!response.ok) {
@@ -65,35 +71,13 @@ const FarmerProfile = ({ farmerData}) => {
 
   const renderField = (field, label) => (
     <Box display="flex" alignItems="center" mb={2}>
-        <Box paddingRight={'10px'}>
-        {field==='name'?(
-          <BadgeIcon></BadgeIcon>
-        ):(
-          <></>
-        )}
-        {field==='farmType'?(
-          <AgricultureIcon></AgricultureIcon>
-        ):(
-          <></>
-        )}
-        {field==='contactInfo'?(
-          <CallIcon></CallIcon>
-        ):(
-          <></>
-        )}
-        {field==='farmLocation'?(
-          <EditLocationIcon></EditLocationIcon>
-        ):(
-          <></>
-        )}
-        {field==='certification'?(
-          <WorkspacePremiumIcon></WorkspacePremiumIcon>
-        ):(
-          <></>
-        )}
-        </Box>
-        
-
+      <Box paddingRight={'10px'}>
+        {field === 'name' && <BadgeIcon />}
+        {field === 'farmType' && <AgricultureIcon />}
+        {field === 'contactInfo' && <CallIcon />}
+        {field === 'farmLocation' && <EditLocationIcon />}
+        {field === 'certification' && <WorkspacePremiumIcon />}
+      </Box>
       <Typography variant="body1" sx={{ fontWeight: 'bold', minWidth: '150px' }}>
         {label}:
       </Typography>
@@ -140,19 +124,17 @@ const FarmerProfile = ({ farmerData}) => {
       }}
     >
       <Stack direction={'row'} gap={'20px'} alignItems={'center'} paddingBottom={'20px'}>
-      <AccountCircleIcon></AccountCircleIcon>
-      <Typography variant="h5" >
-        Farmer Profile
-      </Typography>
+        <AccountCircleIcon />
+        <Typography variant="h5">
+          {role === 'FARMER' ? 'Farmer Profile' : 'Customer Profile'}
+        </Typography>
       </Stack>
-      <Divider/>
-      
-      
+      <Divider />
       {renderField('name', 'Name')}
-      {renderField('farmType', 'Farm Type')}
+      {role === 'FARMER' && renderField('farmType', 'Farm Type')}
       {renderField('contactInfo', 'Contact Info')}
-      {renderField('farmLocation', 'Farm Location')}
-      {renderField('certification', 'Certification')}
+      {role === 'FARMER' && renderField('farmLocation', 'Farm Location')}
+      {role === 'FARMER' && renderField('certification', 'Certification')}
     </Box>
   );
 };
