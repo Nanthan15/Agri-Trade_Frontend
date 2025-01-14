@@ -15,10 +15,10 @@ const Product = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedAuth = JSON.parse(localStorage.getItem('authData'));
-    if (savedAuth && savedAuth.token) {
-      setToken(savedAuth.token);
-      fetchAllProducts(savedAuth.token);
+    const savedToken = localStorage.getItem('authToken');
+    if (savedToken) {
+      setToken(savedToken);
+      fetchAllProducts(savedToken);
     } else {
       alert('No token found. Please log in first.');
       navigate('/login');
@@ -60,7 +60,7 @@ const Product = () => {
       }
     } catch (error) {
       console.error('Error fetching all products:', error);
-      alert('Only for farmer use.. !!');
+      alert('Failed to fetch products. Please try again.');
     }
   };
 

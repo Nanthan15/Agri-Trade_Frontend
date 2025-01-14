@@ -31,14 +31,14 @@ const Orders = ({ orders }) => {
     };
     const [selectedOrder, setSelectedOrder] = useState(null);
     useEffect(() => {
-              const savedAuth = JSON.parse(localStorage.getItem('authData'));
-              if (savedAuth && savedAuth.token) {
-                  setToken(savedAuth.token);
-              } else {
-                  alert('No token found. Please log in first.');
-                  navigate('/login');
-              }
-          }, [navigate]);
+                    const savedToken = localStorage.getItem('authToken');
+                    if (savedToken) {
+                        setToken(savedToken);
+                    } else {
+                        alert('No token found. Please log in first.');
+                        navigate('/login');
+                    }
+                }, [navigate]);
 
     const handleMarkAsCompleteButton = async(orderId) =>{
       try {
