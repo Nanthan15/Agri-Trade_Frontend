@@ -12,35 +12,18 @@ const ConsumerOrder = () => {
 
     useEffect(() => {
         const savedAuth = JSON.parse(localStorage.getItem('authData'));
+        const savedToken = localStorage.getItem('authToken');
         if (savedAuth && savedAuth.token) {
-            setToken(savedAuth.token);
+            setToken(savedToken);
             setUserName(savedAuth.username);
-            fetchUserProfile(savedAuth.token);
-            fetchAllOrders(savedAuth.token);
+            fetchAllOrders(savedToken);
         } else {
             alert('Hey consumer, please log in first.');
             navigate('/login');
         }
     }, [navigate]);
 
-    const fetchUserProfile = async (token) => {
-        try {
-            const response = await fetch('http://localhost:5456/profile/customer', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setUserName(data.name || 'User');
-            } else {
-                throw new Error(data.message || 'Failed to fetch user profile');
-            }
-        } catch (error) {
-            console.error('Error fetching user profile:', error);
-            alert('Failed to fetch user profile. Please try again.');
-        }
-    };
+    
 
     const fetchAllOrders = async (token) => {
         try {

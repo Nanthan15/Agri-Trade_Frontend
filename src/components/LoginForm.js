@@ -20,6 +20,7 @@ const LoginForm = () => {
       if (authData && authData.token) {
         setLoginStatus("Login successful!");
         localStorage.setItem('authData', JSON.stringify(authData));
+        localStorage.setItem('authToken' , authData.token);
         console.log("Auth data saved:", authData);
         navigate('/');
       }

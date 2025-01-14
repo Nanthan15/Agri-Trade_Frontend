@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, IconButton, TextField, Tooltip, Stack, Divider } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
@@ -6,14 +6,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BadgeIcon from '@mui/icons-material/Badge';
-import AgricultureIcon from '@mui/icons-material/Agriculture';
 import CallIcon from '@mui/icons-material/Call';
-import EditLocationIcon from '@mui/icons-material/EditLocation';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-const FarmerProfile = ({ farmerData}) => {
+import PaymentIcon from '@mui/icons-material/Payment';
+
+const CustomerProfile = ({ customerData }) => {
   const [editableField, setEditableField] = useState(null);
   const [editedValue, setEditedValue] = useState('');
-  const [profile, setProfile] = useState(farmerData);
+  const [profile, setProfile] = useState(customerData);
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
@@ -23,19 +22,19 @@ const FarmerProfile = ({ farmerData}) => {
   };
 
   useEffect(() => {
-      const savedToken = localStorage.getItem('authToken');
-      if (savedToken) {
-        setToken(savedToken);
-      } else {
-        alert('No token found. Please log in first.');
-        navigate('/login');
-      }
-    }, [navigate]);
+    const savedToken = localStorage.getItem('authToken');
+    if (savedToken) {
+      setToken(savedToken);
+    } else {
+      alert('No token found. Please log in first.');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const handleSave = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5456/profile/farmer?attribute=${editableField}&value=${editedValue}`,
+        `http://localhost:5456/profile/customer?attribute=${editableField}&value=${editedValue}`,
         {
           method: 'PATCH',
           headers: {
@@ -63,37 +62,11 @@ const FarmerProfile = ({ farmerData}) => {
     setEditedValue('');
   };
 
-  const renderField = (field, label) => (
+  const renderField = (field, label, Icon) => (
     <Box display="flex" alignItems="center" mb={2}>
-        <Box paddingRight={'10px'}>
-        {field==='name'?(
-          <BadgeIcon></BadgeIcon>
-        ):(
-          <></>
-        )}
-        {field==='farmType'?(
-          <AgricultureIcon></AgricultureIcon>
-        ):(
-          <></>
-        )}
-        {field==='contactInfo'?(
-          <CallIcon></CallIcon>
-        ):(
-          <></>
-        )}
-        {field==='farmLocation'?(
-          <EditLocationIcon></EditLocationIcon>
-        ):(
-          <></>
-        )}
-        {field==='certification'?(
-          <WorkspacePremiumIcon></WorkspacePremiumIcon>
-        ):(
-          <></>
-        )}
-        </Box>
-        
-
+      <Box paddingRight="10px">
+        <Icon />
+      </Box>
       <Typography variant="body1" sx={{ fontWeight: 'bold', minWidth: '150px' }}>
         {label}:
       </Typography>
@@ -139,22 +112,17 @@ const FarmerProfile = ({ farmerData}) => {
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <Stack direction={'row'} gap={'20px'} alignItems={'center'} paddingBottom={'20px'}>
-      <AccountCircleIcon></AccountCircleIcon>
-      <Typography variant="h5" >
-        Farmer Profile
-      </Typography>
+      <Stack direction="row" gap="20px" alignItems="center" paddingBottom="20px">
+        <AccountCircleIcon />
+        <Typography variant="h5">Customer Profile</Typography>
       </Stack>
-      <Divider/>
-      
-      
-      {renderField('name', 'Name')}
-      {renderField('farmType', 'Farm Type')}
-      {renderField('contactInfo', 'Contact Info')}
-      {renderField('farmLocation', 'Farm Location')}
-      {renderField('certification', 'Certification')}
+      <Divider />
+
+      {renderField('name', 'Name', BadgeIcon)}
+      {renderField('contactInfo', 'Contact Info', CallIcon)}
+      {renderField('preferredPaymentMethod', 'Preferred Payment Method', PaymentIcon)}
     </Box>
   );
 };
 
-export default FarmerProfile;
+export default CustomerProfile;

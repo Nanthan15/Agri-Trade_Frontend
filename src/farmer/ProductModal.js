@@ -23,14 +23,14 @@ const ProductModal = ({ open, onClose, productData }) => {
   };
 
    useEffect(() => {
-             const savedAuth = JSON.parse(localStorage.getItem('authData'));
-             if (savedAuth && savedAuth.token) {
-                 setToken(savedAuth.token);
-             } else {
-                 alert('No token found. Please log in first.');
-                 navigate('/login');
-             }
-         }, [navigate]);
+                const savedToken = localStorage.getItem('authToken');
+                if (savedToken) {
+                    setToken(savedToken);
+                } else {
+                    alert('No token found. Please log in first.');
+                    navigate('/login');
+                }
+            }, [navigate]);
 
   useEffect(() => {
     if (productData) {

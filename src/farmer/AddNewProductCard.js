@@ -17,9 +17,9 @@ const AddNewProductCard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-          const savedAuth = JSON.parse(localStorage.getItem('authData'));
-          if (savedAuth && savedAuth.token) {
-              setToken(savedAuth.token);
+          const savedToken = localStorage.getItem('authToken');
+          if (savedToken) {
+              setToken(savedToken);
           } else {
               alert('No token found. Please log in first.');
               navigate('/login');
