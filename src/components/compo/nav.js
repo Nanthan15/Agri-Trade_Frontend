@@ -39,7 +39,7 @@ const NavBar = () => {
         <ul className="navbar-nav me-auto">
           <li className="nav-item active">
             <a className="nav-link" href="/">
-              Home <span className="sr-only">(current)</span>
+              Home 
             </a>
           </li>
           {role === 'FARMER' && (
@@ -50,9 +50,9 @@ const NavBar = () => {
               <li className="nav-item">
                 <a className="nav-link" href="/orders">Orders</a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link" href="#">Something else here</a>
-              </li>
+              </li> */}
             </>
           )}
           {role === 'CUSTOMER' && (
@@ -63,9 +63,9 @@ const NavBar = () => {
               <li className="nav-item">
                 <a className="nav-link" href="/consumer/order">Orders</a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link" href="#">Something else here</a>
-              </li>
+              </li> */}
 
 
               

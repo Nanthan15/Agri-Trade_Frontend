@@ -11,6 +11,8 @@ import ConsumerHome from './customer/cosumerhome';
 import ConsumerOrder from './customer/cosumerorder';
 import Payment from './customer/payment';
 import Predict from './AI/predict';
+import Insight from './farmer/InsightPage';
+import InsightPage from './farmer/InsightProductPage';
 
 const App = () => {
   return (
@@ -27,6 +29,8 @@ const App = () => {
         <Route path="/consumer/order" element={<ConsumerOrder/>} />
         <Route path="/consumer/payment" element={<Payment/>} />
         <Route path="/predict" element={<Predict/>} />
+        <Route path="/insight" element={<Insight/>}/>
+        <Route path="/insightproduct" element={<InsightPage/>}/>
       </Routes>
     </Router>
   );

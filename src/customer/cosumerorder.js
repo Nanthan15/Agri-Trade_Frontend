@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/compo/nav';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/global.css';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Accordion, Card } from 'react-bootstrap';
 
 const ConsumerOrder = () => {
     const [token, setToken] = useState(null);
@@ -35,7 +35,7 @@ const ConsumerOrder = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                setAllOrders(Array.isArray(data.addOrderResposeList) ? data.addOrderResposeList : []); // Ensure data is an array
+                setAllOrders(Array.isArray(data.addOrderResposeList) ? data.addOrderResposeList : []);
             } else {
                 throw new Error(data.message || 'Failed to fetch orders');
             }
@@ -60,7 +60,7 @@ const ConsumerOrder = () => {
             });
             if (response.ok) {
                 alert('Order deleted successfully');
-                fetchAllOrders(token); // Refresh the orders list
+                fetchAllOrders(token);
             } else {
                 throw new Error('Failed to delete order');
             }
@@ -93,60 +93,58 @@ const ConsumerOrder = () => {
     return (
         <div>
             <NavBar />
-            <section className="h-100 h-custom" style={{ backgroundColor: '#eee' }}>
+            <section className="h-100 h-custom" style={{ backgroundColor: '#f8f9fa' }}>
                 <div className="container py-5 h-100">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col-lg-8 col-xl-6">
-                            <div className="card border-top border-bottom border-3" style={{ borderColor: '#f37a27 !important' }}>
-                                <div className="card-body p-5">
-                                    <p className="lead fw-bold mb-5" style={{ color: 'green' }}>Purchase Details</p>
-                                    {allOrders.map((order, index) => (
-                                        <div key={index}>
-                                            <div className="row">
-                                                <div className="col mb-3">
-                                                    <p className="small text-muted mb-1">Order ID</p>
-                                                    <p>{order.orderId}</p>
-                                                </div>
-                                                <div className="col mb-3">
-                                                    <p className="small text-muted mb-1">Product</p>
-                                                    <p>{order.productName}</p>
-                                                </div>
-                                            </div>
-                                            <div className="mx-n5 px-5 py-4" style={{ backgroundColor: '#f2f2f2' }}>
-                                                <div className="row">
-                                                    <div className="col-md-8 col-lg-9">
-                                                        <p>Quantity: {order.quantity}</p>
-                                                    </div>
-                                                    <div className="col-md-4 col-lg-3">
-                                                        <p>Total Price: ${order.totalPrice}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row my-4">
-                                                <div className="col-md-12">
-                                                    <p className="lead fw-bold mb-0" style={{ color: 'green' }}>Order Status: {order.orderStatus === 'Completed' ? 'Completed' : order.orderStatus}</p>
-                                                </div>
-                                            </div>
-                                            <div className="row my-4">
-                                                <div className="col-md-6 text-center">
-                                                    <button className="btn btn-primary" onClick={() => handleProceedToPayment(order)}>Proceed to Payment</button>
-                                                </div>
-                                                <div className="col-md-6 text-center">
-                                                    <button className="btn btn-danger" onClick={() => handleDeleteOrder(order.orderId)} disabled={order.orderStatus === 'COMPLETED'}>Delete Order</button>
-                                                </div>
-                                            </div>
-                                            <div className="row my-4">
-                                                <div className="col-md-12 text-right">
-                                                    <button className="btn btn-info" onClick={() => handleCheckDeliveryStatus(order.orderId)}>Delivery Status</button>
-                                                </div>
-                                            </div>
+                    <h3 className="text-center mb-4" style={{ color: '#f37a27' }}>Your Orders({allOrders.length})</h3>
+                    <Accordion defaultActiveKey="0" style={{gap: '10px'}}>
+                        {allOrders.map((order, index) => (
+                            <Accordion.Item eventKey={index.toString()} key={index}>
+                                <Accordion.Header>
+                                    <strong>Order ID:</strong> {order.orderId} &nbsp; | &nbsp; <strong>Product:</strong> {order.productName}
+                                </Accordion.Header>
+                                <Accordion.Body>
+                                    <div className="row mb-3">
+                                        <div className="col-md-6">
+                                            <p><strong>Quantity:</strong> {order.quantity}</p>
                                         </div>
-                                    ))}
-                                    <p className="mt-4 pt-2 mb-0">Want any help? <a href="#!" style={{ color: '#f37a27' }}>Please contact us</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                        <div className="col-md-6">
+                                            <p><strong>Total Price:</strong> ₹{order.totalPrice}</p>
+                                        </div>
+                                    </div>
+                                    <p className="lead fw-bold mb-3" style={{ color: 'green' }}>
+                                        Order Status: {order.orderStatus === 'Completed' ? 'Completed' : order.orderStatus}
+                                    </p>
+                                    <div className="row">
+                                        <div className="col-md-4 text-center mb-2">
+                                            <button
+                                                className="btn btn-primary w-100"
+                                                onClick={() => handleProceedToPayment(order)}
+                                            >
+                                                Proceed to Payment
+                                            </button>
+                                        </div>
+                                        <div className="col-md-4 text-center mb-2">
+                                            <button
+                                                className="btn btn-danger w-100"
+                                                onClick={() => handleDeleteOrder(order.orderId)}
+                                                disabled={order.orderStatus === 'COMPLETED'}
+                                            >
+                                                Delete Order
+                                            </button>
+                                        </div>
+                                        <div className="col-md-4 text-center">
+                                            <button
+                                                className="btn btn-info w-100"
+                                                onClick={() => handleCheckDeliveryStatus(order.orderId)}
+                                            >
+                                                Delivery Status
+                                            </button>
+                                        </div>
+                                    </div>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        ))}
+                    </Accordion>
                 </div>
             </section>
 
@@ -171,6 +169,6 @@ const ConsumerOrder = () => {
             </Modal>
         </div>
     );
-}
+};
 
 export default ConsumerOrder;
