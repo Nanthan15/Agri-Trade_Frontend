@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from './compo/nav';
-import { img1, img2, img3, img4 } from '../resource';
+import { img1, img2, img3, img4, img7, img8, img9 } from '../resource';
 import '../styles/global.css';
 
 function Home() {
@@ -10,12 +10,20 @@ function Home() {
     { prod_id: 3, prod_Img: img3, prod_Name: 'Product 3', prod_Description: 'Description 3', prod_Price: '$30' },
   ];
 
+  
+
   const getImageUrl = (img) => img;
 
   return (
     <>
-      <NavBar/>
-      <div id="carouselExampleCaptions" className="carousel slide" style={{ height: '525px' }}>
+      <NavBar style={{ background: 'linear-gradient(to right, lightgreen, darkgreen)' }} />
+      <div
+        id="carouselExampleCaptions"
+        className="carousel slide"
+        style={{ height: '605px' }}
+        data-bs-ride="carousel"
+        data-bs-interval="1000"
+      >
         <div className="carousel-indicators">
           <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
           <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -23,13 +31,13 @@ function Home() {
         </div>
         <div className="carousel-inner" style={{ height: '100%' }}>
           <div className="carousel-item active" style={{ height: '100%' }}>
-            <img src={"https://media.istockphoto.com/id/990892396/photo/indian-farmer-holding-crop-plant-in-his-wheat-field.jpg?s=612x612&w=0&k=20&c=je5zLlBPEeFplzaSAg_hLryRy2r9AiajSBV_2dd3u_A="} className="d-block w-100" alt="First slide" style={{ height: '100%', objectFit: 'cover' }}/>
+            <img src={img7} className="d-block w-100" alt="First slide" style={{ height: '100%', objectFit: 'cover' }} />
           </div>
           <div className="carousel-item" style={{ height: '100%' }}>
-            <img src={img1} className="d-block w-100" alt="Second slide" style={{ height: '100%', objectFit: 'cover' }}/>
+            <img src={img8} className="d-block w-100" alt="Second slide" style={{ height: '100%', objectFit: 'cover' }} />
           </div>
           <div className="carousel-item" style={{ height: '100%' }}>
-            <img src={img3} className="d-block w-100" alt="Third slide" style={{ height: '100%', objectFit: 'cover' }}/>
+            <img src={img9} className="d-block w-100" alt="Third slide" style={{ height: '100%', objectFit: 'cover' }} />
           </div>
         </div>
         <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
@@ -43,7 +51,7 @@ function Home() {
       <div className="container mt-4">
         <div className="row align-items-center mb-5">
           <div className="col-md-6">
-            <img src={img2} alt="Project Image" className="img-fluid" style={{width:'600px'}}/>
+            <img src={img2} alt="Project Image" className="img-fluid" style={{ width: '600px' }} />
           </div>
           <div className="col-md-6" style={{ backgroundColor: 'lightgreen', padding: '20px' }}>
             <h2><b>Welcome to AGRI&TRADE Company</b></h2>
@@ -56,9 +64,9 @@ function Home() {
             <button className="btn btn-primary">Learn More</button>
           </div>
         </div>
-        <b><hr></hr></b>
+        <b><hr /></b>
 
-        <h2 className="heading11 text-center mb-4">Your Role</h2>
+        <h2 className=" text-center mb-4">Your Role</h2>
         <div className="row">
           <div className="col-md-6">
             <div className="card role-card">
@@ -79,12 +87,13 @@ function Home() {
         </div>
 
         <div className="mt-5 p-3" style={{ backgroundColor: 'lightgreen', width: '100vw', marginLeft: '-50vw', left: '50%', position: 'relative' }}>
-          <h2 className="heading11">All Products</h2>
+          <h2 className=" text-center">All Products</h2>
+          <br></br>
           <div className="row">
             {allProducts.map((prod) => (
               <div key={prod.prod_id} className="col-md-4 mb-3">
                 <div className="card product-card">
-                  <img src={getImageUrl(prod.prod_Img)} alt={prod.prod_Name} className="card-img-top"/>
+                  <img src={getImageUrl(prod.prod_Img)} alt={prod.prod_Name} className="card-img-top" />
                   <div className="card-body">
                     <h5 className="card-title">{prod.prod_Name}</h5>
                     <p className="card-text">{prod.prod_Description}</p>
@@ -94,11 +103,9 @@ function Home() {
               </div>
             ))}
           </div>
-
-          
         </div>
-        <footer className="text-center footer mt-5">
-          
+
+        <footer className="text-center footer mt-5" style={{ backgroundColor: 'lightgreen', padding: '20px' }}>
           <h4>About AgriTrade</h4>
           <p>AgriTrade is a leading company in providing high-quality agricultural products and services. With over 5 years of experience, we are committed to delivering the best to our customers.</p>
           <p><b>Contact Us:</b></p>
@@ -114,13 +121,8 @@ function Home() {
           <p><b>© 2023 AGRI&TRADE Company. All rights reserved.</b></p>
         </footer>
       </div>
-
-
-
-      <br></br>
-     
+      <br />
     </>
-    
   );
 }
 
