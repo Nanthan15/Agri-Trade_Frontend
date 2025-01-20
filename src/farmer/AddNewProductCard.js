@@ -1,7 +1,8 @@
 import React, { useState , useEffect } from 'react';
-import { Card, Box, Modal, Typography, TextField, Button, IconButton } from '@mui/material';
+import { Card, Box, Modal, Typography, TextField, Button, IconButton ,Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const AddNewProductCard = () => {
   const [open, setOpen] = useState(false);
@@ -135,9 +136,12 @@ const AddNewProductCard = () => {
             p: 4,
           }}
         >
-          <Typography variant="h6" mb={2}>
-            Add New Product
-          </Typography>
+         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+    <Typography variant="h6">
+      Add New Product
+    </Typography>
+    <HelpOutlineIcon sx={{ cursor: 'pointer', color: 'gray' }} />
+  </Stack>
           <form onSubmit={handleSubmit}>
             <TextField
               fullWidth

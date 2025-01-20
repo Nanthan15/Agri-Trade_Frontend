@@ -38,6 +38,8 @@ export default function ProductCard({ product }) {
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
 
+  console.log(product);
+
   const handleClickOpen = (product) => {
     setOpenDialog(true);
     setSelectedProduct(product);
@@ -90,7 +92,10 @@ export default function ProductCard({ product }) {
   }
 
   const getImageUrl = (imageName) => {
-    return `http://localhost:5456${imageName}`;
+    
+    const urlimg =  `http://localhost:5456${imageName}`;
+    console.log(urlimg);
+    return urlimg;
   };
 
   const truncateText = (text, length) => {
@@ -127,7 +132,7 @@ export default function ProductCard({ product }) {
       <CardMedia
         component="img"
         height="200"
-        image={getImageUrl(product.prod_Img) || '/static/images/cards/placeholder.jpg'}
+        image={getImageUrl(product.prod_Img)}
         alt={product.prod_Name}
         sx={{
           objectFit: 'cover',

@@ -54,6 +54,14 @@ const ConsumerHome = () => {
         setShowModal(true);
     };
 
+    const getImageUrl = (imageName) => {
+    
+        const urlimg =  `http://localhost:5456${imageName}`;
+        console.log(urlimg);
+        return urlimg;
+      };
+    
+
     const handleOrderSubmit = async () => {
         if (!selectedProduct) return;
         try {
@@ -98,15 +106,21 @@ const ConsumerHome = () => {
                         {allProducts.length > 0 ? (
                             allProducts.map((product, index) => (
                                 <Col key={product.prod_id || index} md={4} className="mb-4">
-                                    <Card>
-                                        <Card.Body>
-                                            <Card.Title>{product.prod_Name}</Card.Title>
-                                            <Card.Text>{product.prod_Description}</Card.Text>
-                                            <Card.Text>Price: ₹{product.prod_Price}</Card.Text>
-                                            <Card.Text>Stock: {product.prod_Stock}</Card.Text>
-                                            <Button variant="primary" onClick={() => handleBuyClick(product)}>Buy</Button>
-                                        </Card.Body>
-                                    </Card>
+                                    <Card style={{ height: "700px", overflow: "hidden" }}>
+    <Card.Img 
+        variant="top" 
+        src={getImageUrl(product.prod_Img)} 
+        alt={product.prod_Name} 
+    />
+    <Card.Body>
+        <Card.Title>{product.prod_Name}</Card.Title>
+        <Card.Text>{product.prod_Description}</Card.Text>
+        <Card.Text>Price: ₹{product.prod_Price}</Card.Text>
+        <Card.Text>Stock: {product.prod_Stock}</Card.Text>
+        <Button variant="primary" onClick={() => handleBuyClick(product)}>Buy</Button>
+    </Card.Body>
+</Card>
+
                                 </Col>
                             ))
                         ) : (
