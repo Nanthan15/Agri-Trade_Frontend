@@ -28,6 +28,11 @@ const loginUser = async (username, password) => {
   }
 };
 
+const registerUser  = async(body) =>{
+  const response = await axios.post('http://localhost:5456/register', body);
+  return response;
+}
+
 export default {
-  loginUser
+  loginUser,registerUser
 };

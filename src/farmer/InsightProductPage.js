@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import NavBar from "../components/compo/nav";
 const Title = styled(Typography)({
   fontFamily: "'Roboto Slab', serif",
   color: "#2e7d32",
@@ -78,7 +79,8 @@ const InsightPage = () => {
   };
 
   return (
-    <Container maxWidth="md">
+     <>
+        <NavBar/><Container maxWidth="md">
       <Title variant="h4">Insight</Title>
 
       {/* Graph Section */}
@@ -126,7 +128,8 @@ const InsightPage = () => {
       <PredictionBox>
         PREDICT COST: <span style={{ color: "#1e88e5" }}>XXX</span>
       </PredictionBox>
-    </Container>
+    </Container></>
+    
   );
 };
 

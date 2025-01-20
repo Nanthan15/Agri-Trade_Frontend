@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Papa from "papaparse";
+import { Navbar } from "react-bootstrap";
 
 // Custom Styled Components
 const UploadButton = styled(Button)({
@@ -72,6 +73,7 @@ const Insight = () => {
   };
 
   return (
+   
     <Container maxWidth="md">
       <Title variant="h4">Insight</Title>
 

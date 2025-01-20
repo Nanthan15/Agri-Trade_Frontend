@@ -13,6 +13,7 @@ import Payment from './customer/payment';
 import Predict from './AI/predict';
 import Insight from './farmer/InsightPage';
 import InsightPage from './farmer/InsightProductPage';
+import Register from './components/register';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/predict" element={<Predict/>} />
         <Route path="/insight" element={<Insight/>}/>
         <Route path="/insightproduct" element={<InsightPage/>}/>
+        <Route path="/register" element={<Register/>}/>
       </Routes>
     </Router>
   );
