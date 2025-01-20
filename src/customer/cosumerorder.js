@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/compo/nav';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/global.css';
+import { Modal, Button } from 'react-bootstrap';
 
 const ConsumerOrder = () => {
     const [token, setToken] = useState(null);
     const [allOrders, setAllOrders] = useState([]);
     const [userName, setUserName] = useState('');
+    const [showDeliveryModal, setShowDeliveryModal] = useState(false);
+    const [deliveryDetails, setDeliveryDetails] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,8 +25,6 @@ const ConsumerOrder = () => {
             navigate('/login');
         }
     }, [navigate]);
-
-    
 
     const fetchAllOrders = async (token) => {
         try {
@@ -66,6 +67,26 @@ const ConsumerOrder = () => {
         } catch (error) {
             console.error('Error deleting order:', error);
             alert('Failed to delete order. Please try again.');
+        }
+    };
+
+    const handleCheckDeliveryStatus = async (orderId) => {
+        try {
+            const response = await fetch(`http://localhost:5456/delivery?id=${orderId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setDeliveryDetails(data);
+                setShowDeliveryModal(true);
+            } else {
+                throw new Error(data.message || 'Failed to fetch delivery status');
+            }
+        } catch (error) {
+            console.error('Error fetching delivery status:', error);
+            alert('Failed to fetch delivery status. Please try again.');
         }
     };
 
@@ -114,6 +135,11 @@ const ConsumerOrder = () => {
                                                     <button className="btn btn-danger" onClick={() => handleDeleteOrder(order.orderId)} disabled={order.orderStatus === 'COMPLETED'}>Delete Order</button>
                                                 </div>
                                             </div>
+                                            <div className="row my-4">
+                                                <div className="col-md-12 text-right">
+                                                    <button className="btn btn-info" onClick={() => handleCheckDeliveryStatus(order.orderId)}>Delivery Status</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                     <p className="mt-4 pt-2 mb-0">Want any help? <a href="#!" style={{ color: '#f37a27' }}>Please contact us</a></p>
@@ -123,6 +149,26 @@ const ConsumerOrder = () => {
                     </div>
                 </div>
             </section>
+
+            <Modal show={showDeliveryModal} onHide={() => setShowDeliveryModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delivery Status</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {deliveryDetails ? (
+                        <div>
+                            <p><strong>Tracking Number:</strong> {deliveryDetails.trackingNumber}</p>
+                            <p><strong>Estimated Arrival Time:</strong> {deliveryDetails.estimatedArrivalTime}</p>
+                            <p><strong>Delivery Address:</strong> {deliveryDetails.deliveryAddress}</p>
+                        </div>
+                    ) : (
+                        <p>No delivery details available.</p>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeliveryModal(false)}>Close</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
