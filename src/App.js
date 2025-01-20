@@ -10,6 +10,7 @@ import FarmerProfilePage from './farmer/FarmerProfilePage';
 import ConsumerHome from './customer/cosumerhome';
 import ConsumerOrder from './customer/cosumerorder';
 import Payment from './customer/payment';
+import Predict from './AI/predict';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/consumer/home" element={<ConsumerHome/>} />
         <Route path="/consumer/order" element={<ConsumerOrder/>} />
         <Route path="/consumer/payment" element={<Payment/>} />
+        <Route path="/predict" element={<Predict/>} />
       </Routes>
     </Router>
   );

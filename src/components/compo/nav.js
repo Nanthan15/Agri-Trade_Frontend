@@ -3,18 +3,21 @@ import { useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const savedAuth = JSON.parse(localStorage.getItem('authData'));
     if (savedAuth && savedAuth.token) {
       setIsLoggedIn(true);
+      setRole(savedAuth.role);
     }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('authData');
     setIsLoggedIn(false);
+    setRole(null);
     navigate('/');
   };
 
@@ -39,30 +42,35 @@ const NavBar = () => {
               Home <span className="sr-only">(current)</span>
             </a>
           </li>
+          {role === 'FARMER' && (
+            <>
+              <li className="nav-item">
+                <a className="nav-link" href="/products">Product</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/orders">Orders</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Something else here</a>
+              </li>
+            </>
+          )}
+          {role === 'CUSTOMER' && (
+            <>
+            <li className="nav-item">
+                <a className="nav-link" href="/consumer/home">Product</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/consumer/order">Orders</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Something else here</a>
+              </li>
 
-          <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Farmer
-            </a>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown" style={{ backgroundColor: '#59E659' }}>
-              <a className="dropdown-item" href="/products">Product</a>
-              <a className="dropdown-item" href="/orders">Orders</a>
-              <div className="dropdown-divider"></div>
-              <a className="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
 
-          <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Customer
-            </a>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown" style={{ backgroundColor: '#59E659' }}>
-              <a className="dropdown-item" href="/consumer/home">Product</a>
-              <a className="dropdown-item" href="/consumer/order">Orders</a>
-              <div className="dropdown-divider"></div>
-              {/* <a className="dropdown-item" href="#">Something else here</a> */}
-            </div>
-          </li>
+              
+            </>
+          )}
         </ul>
         <ul className="navbar-nav ms-auto" style={{ marginRight: '13px' }}>
           <li className="nav-item">
