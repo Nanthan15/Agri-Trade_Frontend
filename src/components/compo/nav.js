@@ -22,8 +22,26 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#59E659' }}>
-      <a className="navbar-brand" href="#" style={{ marginLeft: '13px', color:'white', fontWeight: 'bold', textShadow: '1px 1px 2px black' }}> AGRI&TRADE </a>
+    <nav
+      className="navbar navbar-expand-lg"
+      style={{
+        background: 'linear-gradient(to right, #32a852, #59e659)',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+        padding: '10px 20px',
+      }}
+    >
+      <a
+        className="navbar-brand"
+        href="#"
+        style={{
+          color: 'white',
+          fontWeight: 'bold',
+          fontSize: '1.5rem',
+          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
+        }}
+      >
+        AGRI&TRADE
+      </a>
       <button
         className="navbar-toggler"
         type="button"
@@ -35,50 +53,99 @@ const NavBar = () => {
       >
         <span className="navbar-toggler-icon"></span>
       </button>
-      <div className="collapse navbar-collapse" id="navbarNav" style={{ marginLeft: '13px' }}>
+      <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav me-auto">
-          <li className="nav-item active">
-            <a className="nav-link" href="/">
-              Home 
+          <li className="nav-item">
+            <a
+              className="nav-link"
+              href="/"
+              style={{
+                color: 'white',
+                fontWeight: '500',
+                margin: '0 10px',
+                transition: 'color 0.3s',
+              }}
+              onMouseOver={(e) => (e.target.style.color = '#c2f0c2')}
+              onMouseOut={(e) => (e.target.style.color = 'white')}
+            >
+              Home
             </a>
           </li>
           {role === 'FARMER' && (
             <>
               <li className="nav-item">
-                <a className="nav-link" href="/products">Product</a>
+                <a
+                  className="nav-link"
+                  href="/products"
+                  style={{ color: 'white', margin: '0 10px' }}
+                >
+                  Product
+                </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/orders">Orders</a>
+                <a
+                  className="nav-link"
+                  href="/orders"
+                  style={{ color: 'white', margin: '0 10px' }}
+                >
+                  Orders
+                </a>
               </li>
-              {/* <li className="nav-item">
-                <a className="nav-link" href="#">Something else here</a>
-              </li> */}
             </>
           )}
           {role === 'CUSTOMER' && (
             <>
-            <li className="nav-item">
-                <a className="nav-link" href="/consumer/home">Product</a>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="/consumer/home"
+                  style={{ color: 'white', margin: '0 10px' }}
+                >
+                  Product
+                </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/consumer/order">Orders</a>
+                <a
+                  className="nav-link"
+                  href="/consumer/order"
+                  style={{ color: 'white', margin: '0 10px' }}
+                >
+                  Orders
+                </a>
               </li>
-              {/* <li className="nav-item">
-                <a className="nav-link" href="#">Something else here</a>
-              </li> */}
-
-
-              
             </>
           )}
         </ul>
-        <ul className="navbar-nav ms-auto" style={{ marginRight: '13px' }}>
+        <ul className="navbar-nav ms-auto">
           <li className="nav-item">
-            <a className="nav-link" href="/profile">Profile</a>
+            <a
+              className="nav-link"
+              href="/profile"
+              style={{
+                color: 'white',
+                margin: '0 10px',
+                transition: 'color 0.3s',
+              }}
+              onMouseOver={(e) => (e.target.style.color = '#c2f0c2')}
+              onMouseOut={(e) => (e.target.style.color = 'white')}
+            >
+              Profile
+            </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href={isLoggedIn ? "#" : "/login"} onClick={isLoggedIn ? handleLogout : null}>
-              {isLoggedIn ? "Logout" : "Login"}
+            <a
+              className="nav-link"
+              href={isLoggedIn ? '#' : '/login'}
+              onClick={isLoggedIn ? handleLogout : null}
+              style={{
+                color: 'white',
+                margin: '0 10px',
+                transition: 'color 0.3s',
+              }}
+              onMouseOver={(e) => (e.target.style.color = '#c2f0c2')}
+              onMouseOut={(e) => (e.target.style.color = 'white')}
+            >
+              {isLoggedIn ? 'Logout' : 'Login'}
             </a>
           </li>
         </ul>
