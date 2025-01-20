@@ -1,4 +1,96 @@
+.product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease-in-out;
+}
 
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+h2.heading11 {
+    color: #3c8c1f;
+    font-size: 2rem;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 1025px) {
+    .h-custom {
+        height: 100vh !important;
+    }
+}
+
+.horizontal-timeline .items {
+    border-top: 2px solid #ddd;
+}
+
+.horizontal-timeline .items .items-list {
+    position: relative;
+    margin-right: 0;
+}
+
+.horizontal-timeline .items .items-list:before {
+    content: "";
+    position: absolute;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: #ddd;
+    top: 0;
+    margin-top: -5px;
+}
+
+.horizontal-timeline .items .items-list {
+    padding-top: 15px;
+}
+
+.role-card {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.role-card img {
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease-in-out;
+    object-fit: cover;
+}
+
+.role-card:hover img {
+    opacity: 0.2;
+}
+
+.role-card .card-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    text-align: center;
+    color: black;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.role-card:hover .card-body {
+    opacity: 1;
+}
 
 .product-card {
     border: 1px solid #ddd;
