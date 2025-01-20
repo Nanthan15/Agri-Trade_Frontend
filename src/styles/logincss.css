@@ -1,0 +1,52 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.image-container {
+  position: relative;
+  flex: 1;
+}
+
+.image-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: alternateImages 6s infinite;
+}
+
+.image {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.image-farmer {
+  animation: fadeFarmer 6s infinite;
+}
+
+.image-costs {
+  animation: fadeCosts 6s infinite;
+}
+
+@keyframes fadeFarmer {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes fadeCosts {
+  0%, 50% { opacity: 0; }
+  51%, 100% { opacity: 1; }
+}
+
+.form-container {
+  flex: 1;
+  padding: 2rem;
+}

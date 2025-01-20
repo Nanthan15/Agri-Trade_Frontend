@@ -91,6 +91,15 @@ const NavBar = () => {
                   Orders
                 </a>
               </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="/insightproduct"
+                  style={{ color: 'white', margin: '0 10px' }}
+                >
+                  Get Insights
+                </a>
+              </li>
             </>
           )}
           {role === 'CUSTOMER' && (
@@ -117,10 +126,11 @@ const NavBar = () => {
           )}
         </ul>
         <ul className="navbar-nav ms-auto">
+        {/* {(role === 'CUSTOMER' || role ==='FARMER') && ( */}
           <li className="nav-item">
             <a
               className="nav-link"
-              href="/profile"
+              href={isLoggedIn ? '/profile' : '/register'}
               style={{
                 color: 'white',
                 margin: '0 10px',
@@ -129,9 +139,12 @@ const NavBar = () => {
               onMouseOver={(e) => (e.target.style.color = '#c2f0c2')}
               onMouseOut={(e) => (e.target.style.color = 'white')}
             >
-              Profile
+               {isLoggedIn ? 'Profile' : 'SingUp'}
+              
             </a>
           </li>
+
+            {/* )} */}
           <li className="nav-item">
             <a
               className="nav-link"

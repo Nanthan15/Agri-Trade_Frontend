@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react';
-import { Card, Box, Modal, Typography, TextField, Button, IconButton ,Stack } from '@mui/material';
+import { Card, Box, Modal, Typography, TextField, Button, IconButton ,Stack, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -17,6 +17,12 @@ const AddNewProductCard = () => {
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
+
+
+  const handleQClick = () => {
+    navigate('/insightproduct');
+  };
+
   useEffect(() => {
           const savedToken = localStorage.getItem('authToken');
           if (savedToken) {
@@ -30,6 +36,7 @@ const AddNewProductCard = () => {
   const handleImageUpload = (e) => {
     setProductImg(e.target.files[0]);
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -140,7 +147,13 @@ const AddNewProductCard = () => {
     <Typography variant="h6">
       Add New Product
     </Typography>
-    <HelpOutlineIcon sx={{ cursor: 'pointer', color: 'gray' }} />
+    <Tooltip title="get Insights">
+    <HelpOutlineIcon
+      sx={{ cursor: 'pointer', color: 'gray' }}
+      onClick={handleQClick}
+    />
+    </Tooltip>
+    
   </Stack>
           <form onSubmit={handleSubmit}>
             <TextField
