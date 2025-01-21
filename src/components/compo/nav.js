@@ -71,6 +71,22 @@ const NavBar = () => {
               Home
             </a>
           </li>
+          <li className="nav-item">
+            <a
+              className="nav-link"
+              href="/customer/feed"
+              style={{
+                color: 'white',
+                fontWeight: '500',
+                margin: '0 10px',
+                transition: 'color 0.3s',
+              }}
+              onMouseOver={(e) => (e.target.style.color = '#c2f0c2')}
+              onMouseOut={(e) => (e.target.style.color = 'white')}
+            >
+              Feedback
+            </a>
+          </li>
           {role === 'FARMER' && (
             <>
               <li className="nav-item">
