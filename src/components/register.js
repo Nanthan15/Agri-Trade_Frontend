@@ -32,7 +32,7 @@ const Register = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimationStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
-    }, 800); // Adjust the timing for animation steps
+    }, 300); // Adjust the timing for animation steps
     return () => clearInterval(interval);
   }, []);
 
