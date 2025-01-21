@@ -62,7 +62,7 @@ const Payment = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    orderStatus: 'Completed'
+                    orderStatus: 'Payment Completed'
                 }),
             });
             if (!response.ok) {

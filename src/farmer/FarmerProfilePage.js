@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/compo/nav';
 import FarmerProfile from './FarmerProfile';
-import { Box } from '@mui/material';
+import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const FarmerProfilePage = () => {
   const [token, setToken] = useState(null);
@@ -60,15 +61,23 @@ const FarmerProfilePage = () => {
   return (
     <>
       <NavBar />
-      {loading ? (
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>Loading...</div>
-      ) : profileData ? (
-        <Box paddingTop={'20px'}>
-          <FarmerProfile farmerData={profileData} role={role} />
-        </Box>
-      ) : (
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>No profile data available.</div>
-      )}
+      <Container className="mt-5">
+        {loading ? (
+          <Row className="justify-content-center">
+            <Spinner animation="border" />
+          </Row>
+        ) : profileData ? (
+          <Row className="justify-content-center">
+            <Col md={8}>
+              <FarmerProfile farmerData={profileData} role={role} />
+            </Col>
+          </Row>
+        ) : (
+          <Row className="justify-content-center">
+            <Alert variant="danger">No profile data available.</Alert>
+          </Row>
+        )}
+      </Container>
     </>
   );
 };

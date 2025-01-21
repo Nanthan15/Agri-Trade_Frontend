@@ -81,6 +81,7 @@ const InsightPage = () => {
   return (
      <>
         <NavBar/><Container maxWidth="md">
+          <br></br>
       <Title variant="h4">Insight</Title>
 
       {/* Graph Section */}

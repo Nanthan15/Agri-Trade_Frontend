@@ -38,7 +38,11 @@ const LoginForm = () => {
   };
 
   return (
-    <> <NavBar></NavBar><div className="login-page">
+    <> 
+    {/* <NavBar></NavBar> */}
+    
+    
+    <div className="login-page">
     
     <div className="form-container">
       <Container>
