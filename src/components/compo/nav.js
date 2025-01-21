@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const savedAuth = JSON.parse(localStorage.getItem('authData'));
@@ -23,7 +24,7 @@ const NavBar = () => {
 
   return (
     <nav
-      className="navbar navbar-expand-lg"
+      className={`navbar navbar-expand-lg ${location.pathname === '/' ? 'fixed-top' : ''}`}
       style={{
         background: 'linear-gradient(to right, #32a852, #59e659)',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
@@ -142,7 +143,6 @@ const NavBar = () => {
           )}
         </ul>
         <ul className="navbar-nav ms-auto">
-        {/* {(role === 'CUSTOMER' || role ==='FARMER') && ( */}
           <li className="nav-item">
             <a
               className="nav-link"
@@ -155,12 +155,9 @@ const NavBar = () => {
               onMouseOver={(e) => (e.target.style.color = '#c2f0c2')}
               onMouseOut={(e) => (e.target.style.color = 'white')}
             >
-               {isLoggedIn ? 'Profile' : 'SingUp'}
-              
+              {isLoggedIn ? 'Profile' : 'SignUp'}
             </a>
           </li>
-
-            {/* )} */}
           <li className="nav-item">
             <a
               className="nav-link"
