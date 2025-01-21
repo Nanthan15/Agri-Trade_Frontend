@@ -52,7 +52,7 @@ const LoginForm = () => {
                   className="mb-3"
                   style={{ width: "80px" }}
                 />
-                <h3>Welcome to AgriConnect</h3>
+                <h3>Welcome to AgriTrading</h3>
                 <p>Your gateway to smarter farming solutions</p>
               </Card.Header>
               <Card.Body>
