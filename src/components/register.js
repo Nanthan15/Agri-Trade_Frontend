@@ -6,6 +6,7 @@ import { img10,img11 } from "../resource";
 
 import { Form, Button, Alert, Card, Container, Row, Col, Nav } from "react-bootstrap";
 import "../styles/logincss.css";
+import NavBar from "./compo/nav";
 
 const Register = () => {
   const [role, setRole] = useState("FARMER");
@@ -95,6 +96,7 @@ const Register = () => {
 
   return (
     <>
+    <NavBar></NavBar>
       <div
         className="register-page"
         style={{

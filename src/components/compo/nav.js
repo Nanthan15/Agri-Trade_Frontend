@@ -72,6 +72,7 @@ const NavBar = () => {
               Home
             </a>
           </li>
+          {(role === 'FARMER' || role==='CUSTOMER' )&& (
           <li className="nav-item">
             <a
               className="nav-link"
@@ -88,6 +89,7 @@ const NavBar = () => {
               Feedback
             </a>
           </li>
+          )}
           {role === 'FARMER' && (
             <>
               <li className="nav-item">

@@ -68,6 +68,7 @@ const LoginForm = () => {
 
   return (
     <>
+    <NavBar></NavBar>
       <div
         className="login-page"
         style={{

@@ -1,136 +1,174 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Container,
-  Typography,
   Box,
   Button,
-  Menu,
-  MenuItem,
+  Container,
   Paper,
+  Typography,
+  CircularProgress,
+  TextField,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Autocomplete from "@mui/material/Autocomplete";
+import axios from "axios";
 import NavBar from "../components/compo/nav";
-const Title = styled(Typography)({
-  fontFamily: "'Roboto Slab', serif",
-  color: "#2e7d32",
-  textAlign: "center",
-  fontWeight: "bold",
-  marginBottom: 30,
-});
-
-const DummyGraph = styled(Box)({
-  height: 300,
-  marginBottom: 30,
-  background: "linear-gradient(45deg, #6a1b9a, #ab47bc)",
-  borderRadius: 8,
-});
-
-const StyledButton = styled(Button)({
-  margin: "10px",
-  background: "linear-gradient(45deg, #1e88e5, #42a5f5)",
-  color: "#ffffff",
-  fontWeight: "bold",
-  "&:hover": {
-    background: "linear-gradient(45deg, #1565c0, #1e88e5)",
-  },
-});
-
-const PredictionBox = styled(Box)({
-  marginTop: 30,
-  padding: "20px",
-  background: "#f5f5f5",
-  textAlign: "center",
-  borderRadius: 8,
-  fontSize: "18px",
-  fontWeight: "bold",
-});
 
 const InsightPage = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedValue, setSelectedValue] = useState({
-    State: "Select State",
-    District: "Select District",
-    AMPC: "Select AMPC",
-    Commodity: "Select Commodity",
-    Date: "Select Date",
+  const [loading, setLoading] = useState(false);
+  const [dropdownOptions, setDropdownOptions] = useState({
+    states: [],
+    districts: [],
+    markets: [],
+    commodities: [],
   });
+  const [selectedValue, setSelectedValue] = useState({
+    state: "",
+    district: "",
+    market: "",
+    commodity: "",
+    month: null,
+  });
+  const [graphData, setGraphData] = useState(null);
+  const [priceData, setPriceData] = useState(null);
 
-  const handleClick = (event, key) => {
-    setAnchorEl({ anchor: event.currentTarget, key });
-  };
+  // Fetch dropdown options dynamically
+  useEffect(() => {
+    const fetchDropdownData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/fetch_data");
+        setDropdownOptions(response.data);
+      } catch (error) {
+        console.error("Error fetching dropdown data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDropdownData();
+  }, []);
 
-  const handleClose = (value) => {
-    if (value) {
-      setSelectedValue((prev) => ({
-        ...prev,
-        [anchorEl.key]: value,
-      }));
+  const fetchGraph = async () => {
+    const { commodity, month } = selectedValue;
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/generate_graph", {
+        params: { commodity, month },
+        responseType: "arraybuffer",
+      });
+      const graphImage = `data:image/png;base64,${btoa(
+        String.fromCharCode(...new Uint8Array(response.data))
+      )}`;
+      setGraphData(graphImage);
+    } catch (error) {
+      console.error("Error fetching graph:", error);
     }
-    setAnchorEl(null);
   };
 
-  const dropdownOptions = {
-    State: ["Karnataka", "Maharashtra", "Tamil Nadu", "Kerala"],
-    District: ["Bangalore", "Mumbai", "Chennai", "Kochi"],
-    AMPC: ["Market 1", "Market 2", "Market 3"],
-    Commodity: ["Rice", "Wheat", "Maize", "Sugar"],
-    Date: ["2025-01-20", "2025-01-21", "2025-01-22"],
+  const fetchPrice = async () => {
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/recommend_price", {
+        state: selectedValue.state,
+        district: selectedValue.district,
+        market: selectedValue.market,
+        commodity: selectedValue.commodity,
+        month: selectedValue.month,
+      });
+      setPriceData(response.data);
+    } catch (error) {
+      console.error("Error fetching price:", error);
+    }
   };
+
+  const handleSubmit = () => {
+    const { commodity, month, state, district, market } = selectedValue;
+
+    if (commodity && month) {
+      fetchGraph();
+    }
+
+    if (state && district && market && commodity && month) {
+      fetchPrice();
+    }
+  };
+
+  const renderDropdown = (label, key, options) => (
+    <Box mb={2} width="100%">
+      <Autocomplete
+        options={options}
+        getOptionLabel={(option) => option}
+        renderInput={(params) => <TextField {...params} label={label} variant="outlined" />}
+        onChange={(event, newValue) =>
+          setSelectedValue((prev) => ({ ...prev, [key]: newValue || "" }))
+        }
+        value={selectedValue[key] || ""}
+        loading={loading}
+        loadingText="Loading options..."
+        ListboxProps={{ style: { maxHeight: 200, overflow: "auto" } }} // Makes it scrollable
+      />
+    </Box>
+  );
 
   return (
-     <>
-        <NavBar/><Container maxWidth="md">
-          <br></br>
-      <Title variant="h4">Insight</Title>
+    <>
+    <NavBar></NavBar>
+      <Container maxWidth="md">
+        <Typography variant="h4" align="center" gutterBottom>
+          Insight
+        </Typography>
 
-      {/* Graph Section */}
-      <Paper elevation={3}>
-        <DummyGraph />
-      </Paper>
-
-      {/* Dropdown Buttons */}
-      <Box display="flex" justifyContent="center" flexWrap="wrap" mt={3}>
-        {Object.keys(dropdownOptions).map((key) => (
-          <div key={key}>
-            <StyledButton
-              onClick={(event) => handleClick(event, key)}
-            >
-              {key}
-              <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
-            </StyledButton>
-            <Menu
-              anchorEl={anchorEl?.anchor}
-              open={anchorEl?.key === key}
-              onClose={() => handleClose()}
-            >
-              {dropdownOptions[key].map((option) => (
-                <MenuItem
-                  key={option}
-                  onClick={() => handleClose(option)}
-                >
-                  {option}
-                </MenuItem>
-              ))}
-            </Menu>
-            <Typography
-              variant="caption"
-              display="block"
-              align="center"
-              mt={1}
-            >
-              {selectedValue[key]}
+        {/* Graph Section */}
+        <Paper
+          elevation={3}
+          style={{ height: 400, display: "flex", justifyContent: "center", alignItems: "center" }}
+        >
+          {graphData ? (
+            <img
+              src={graphData}
+              alt="Graph"
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+            />
+          ) : (
+            <Typography variant="body1">
+              Select options and submit to generate the graph.
             </Typography>
-          </div>
-        ))}
-      </Box>
+          )}
+        </Paper>
 
-      {/* Prediction Section */}
-      <PredictionBox>
-        PREDICT COST: <span style={{ color: "#1e88e5" }}>XXX</span>
-      </PredictionBox>
-    </Container></>
-    
+        {/* Dropdowns */}
+        <Box mt={3}>
+          {renderDropdown("State", "state", dropdownOptions.states)}
+          {renderDropdown("District", "district", dropdownOptions.districts)}
+          {renderDropdown("Market", "market", dropdownOptions.markets)}
+          {renderDropdown("Commodity", "commodity", dropdownOptions.commodities)}
+          {renderDropdown("Month", "month", Array.from({ length: 12 }, (_, i) => i + 1))}
+        </Box>
+
+        {/* Submit Button */}
+        <Box display="flex" justifyContent="center" mt={3}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            disabled={loading}
+            startIcon={loading ? <CircularProgress size={20} /> : null}
+          >
+            Submit
+          </Button>
+        </Box>
+
+        {/* Prediction Section */}
+        {priceData && (
+          <Box mt={3} p={2} border={1} borderColor="grey.400" borderRadius={4}>
+            <Typography variant="h6" align="center">
+              Price Prediction
+            </Typography>
+            <Typography variant="body1">Max Price: {priceData.max_price}</Typography>
+            <Typography variant="body1">Min Price: {priceData.min_price}</Typography>
+            <Typography variant="body1">
+              Predicted Price: {priceData.predicted_price.toFixed(2)}
+            </Typography>
+          </Box>
+        )}
+      </Container>
+    </>
   );
 };
 
