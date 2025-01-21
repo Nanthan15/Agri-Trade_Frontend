@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../ApiService";
-import { Form, Button, Alert, Card, Container, Row, Col, Nav } from "react-bootstrap";
 import farmerimage from "../resource/farmer.png";
+import costsimage from "../resource/costs.png";
+import { Form, Button, Alert, Card, Container, Row, Col, Nav } from "react-bootstrap";
+import { img1, img2, img3, img4, img7, img8, img9, img10 } from "../resource";
 import "../styles/logincss.css";
 import NavBar from "./compo/nav";
 
@@ -84,13 +86,12 @@ const Register = () => {
 
   return (
     <>
-      
-      <div className="register-page">
+      <div className="register-page" style={{ backgroundImage: `url(${img10})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', opacity: 0.9 }}>
         <div className="form-container">
           <Container>
             <Row className="justify-content-center">
               <Col md={6} lg={5}>
-                <Card className="shadow-lg">
+                <Card className="shadow-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
                   <Card.Header className="bg-success text-white text-center">
                     <img
                       src={farmerimage}
