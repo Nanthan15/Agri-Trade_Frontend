@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../ApiService";
 import farmerimage from "../resource/farmer.png";
-import costsimage from "../resource/costs.png";
+import { img10,img11 } from "../resource";
+
 import { Form, Button, Alert, Card, Container, Row, Col, Nav } from "react-bootstrap";
-import { img1, img2, img3, img4, img7, img8, img9, img10 } from "../resource";
 import "../styles/logincss.css";
-import NavBar from "./compo/nav";
 
 const Register = () => {
   const [role, setRole] = useState("FARMER");
@@ -26,6 +25,16 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Animation state for header text
+  const [animationStep, setAnimationStep] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimationStep((prevStep) => (prevStep < 2 ? prevStep + 1 : prevStep));
+    }, 800); // Adjust the timing for animation steps
+    return () => clearInterval(interval);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -86,21 +95,46 @@ const Register = () => {
 
   return (
     <>
-      <div className="register-page" style={{ backgroundImage: `url(${img10})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', opacity: 0.9 }}>
+      <div
+        className="register-page"
+        style={{
+          backgroundImage: `url(${img10})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          opacity: 0.9,
+        }}
+      >
         <div className="form-container">
           <Container>
             <Row className="justify-content-center">
               <Col md={6} lg={5}>
-                <Card className="shadow-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                <Card className="shadow-lg" style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}>
                   <Card.Header className="bg-success text-white text-center">
                     <img
-                      src={farmerimage}
+                      src={img11}
                       alt="Farmer Logo"
                       className="mb-3"
-                      style={{ width: "80px" }}
+                      style={{ width: "180px" }}
                     />
-                    <h3>Join AgriTrading</h3>
-                    <p>Create your account to get started</p>
+                    <h3
+                      style={{
+                        opacity: animationStep >= 1 ? 1 : 0,
+                        transition: "opacity 1s ease-in-out",
+                        transform: animationStep >= 1 ? "translateY(0)" : "translateY(-20px)",
+                      }}
+                    >
+                      Join AgriTrading
+                    </h3>
+                    <p
+                      style={{
+                        opacity: animationStep >= 2 ? 1 : 0,
+                        transition: "opacity 1s ease-in-out",
+                        transform: animationStep >= 2 ? "translateY(0)" : "translateY(-20px)",
+                      }}
+                    >
+                      Create your account to get started
+                    </p>
                   </Card.Header>
                   <Card.Body>
                     <Nav
