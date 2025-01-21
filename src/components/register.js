@@ -84,7 +84,7 @@ const Register = () => {
 
   return (
     <>
-      <NavBar />
+      
       <div className="register-page">
         <div className="form-container">
           <Container>
