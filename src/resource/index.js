@@ -5,4 +5,6 @@ import img4 from './img4.jpg';
 import img7 from './img7.jpg';
 import img8 from './img8.jpg';
 import img9 from './img9.jpg';
-export { img1, img2, img3,img4,img7,img8,img9};
+import img10 from './img10.jpg';
+import img11 from './img11.gif';
+export { img1, img2, img3,img4,img7,img8,img9,img10,img11};
