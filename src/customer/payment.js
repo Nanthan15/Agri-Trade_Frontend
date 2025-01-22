@@ -40,8 +40,6 @@ const Payment = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                await updateOrderStatus(order.orderId);
-                await addDeliveryDetails(order.orderId);
                 alert('Payment successful!');
                 navigate('/consumer/order');
             } else {
@@ -50,49 +48,6 @@ const Payment = () => {
         } catch (error) {
             console.error('Error processing payment:', error);
             alert('Payment failed. Please try again.');
-        }
-    };
-
-    const updateOrderStatus = async (orderId) => {
-        try {
-            const response = await fetch(`http://localhost:5456/orders/status?orderId=${orderId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    orderStatus: 'Payment Completed'
-                }),
-            });
-            if (!response.ok) {
-                throw new Error('Failed to update order status');
-            }
-        } catch (error) {
-            console.error('Error updating order status:', error);
-        }
-    };
-
-    const addDeliveryDetails = async (orderId) => {
-        try {
-            const response = await fetch('http://localhost:5456/delivery', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    orderId,
-                    trackingNumber: Math.floor(Math.random() * 10000),
-                    estimatedArrivalTime: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                    deliveryAddress: 'Bangalore'
-                }),
-            });
-            if (!response.ok) {
-                throw new Error('Failed to add delivery details');
-            }
-        } catch (error) {
-            console.error('Error adding delivery details:', error);
         }
     };
 

@@ -5,12 +5,30 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/global.css';
 import { Modal, Button, Accordion, Card } from 'react-bootstrap';
 
+const fetchPaymentStatus = async (orderId, token) => {
+    try {
+        const response = await fetch(`http://localhost:5456/customers/payments/get-byOrderId?orderId=${orderId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.ok) {
+            return 'Completed';
+        } else {
+            throw new Error('Payment pending');
+        }
+    } catch (error) {
+        return 'Pending';
+    }
+};
+
 const ConsumerOrder = () => {
     const [token, setToken] = useState(null);
     const [allOrders, setAllOrders] = useState([]);
     const [userName, setUserName] = useState('');
     const [showDeliveryModal, setShowDeliveryModal] = useState(false);
     const [deliveryDetails, setDeliveryDetails] = useState(null);
+    const [paymentStatuses, setPaymentStatuses] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -45,6 +63,21 @@ const ConsumerOrder = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchAllPaymentStatuses = async () => {
+            const statuses = {};
+            for (const order of allOrders) {
+                const status = await fetchPaymentStatus(order.orderId, token);
+                statuses[order.orderId] = status;
+            }
+            setPaymentStatuses(statuses);
+        };
+
+        if (allOrders.length > 0) {
+            fetchAllPaymentStatuses();
+        }
+    }, [allOrders, token]);
+
     const handleProceedToPayment = (order) => {
         localStorage.setItem('orderToPay', JSON.stringify(order));
         navigate('/consumer/payment');
@@ -72,7 +105,7 @@ const ConsumerOrder = () => {
 
     const handleCheckDeliveryStatus = async (orderId) => {
         try {
-            const response = await fetch(`http://localhost:5456/delivery?id=${orderId}`, {
+            const response = await fetch(`http://localhost:5456/delivery-byorderid?id=${orderId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -111,6 +144,9 @@ const ConsumerOrder = () => {
                                             <p><strong>Total Price:</strong> ₹{order.totalPrice}</p>
                                         </div>
                                     </div>
+                                    <p className="lead fw-bold mb-1" style={{ color: 'blue', fontSize: '0.9rem' }}>
+                                        Payment Status: {paymentStatuses[order.orderId] || 'Loading...'}
+                                    </p>
                                     <p className="lead fw-bold mb-3" style={{ color: 'green' }}>
                                         Order Status: {order.orderStatus === 'Completed' ? 'Completed' : order.orderStatus}
                                     </p>
@@ -119,6 +155,7 @@ const ConsumerOrder = () => {
                                             <button
                                                 className="btn btn-primary w-100"
                                                 onClick={() => handleProceedToPayment(order)}
+                                                disabled={paymentStatuses[order.orderId] === 'Completed'}
                                             >
                                                 Proceed to Payment
                                             </button>

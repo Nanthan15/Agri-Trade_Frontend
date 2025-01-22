@@ -63,6 +63,34 @@ const Orders = ({ orders }) => {
     }
     }
 
+    const handleDispatchButton = async(orderId) =>{
+      try {
+        
+        const response = await fetch('http://localhost:5456/delivery', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                orderId,
+                trackingNumber: Math.floor(Math.random() * 10000),
+                estimatedArrivalTime: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                deliveryAddress: 'Bangalore'
+            }),
+        });
+    
+        if (!response.ok) {
+            throw new Error('Failed to add delivery details');
+        }
+    
+        window.location.reload();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to dispatch order. Please try again.');
+    }
+    }
+
     const handleDeleteIconClick = (orderId) =>{
       setOpenDialog(true);
       setSelectedOrder(orderId);
@@ -181,6 +209,13 @@ const Orders = ({ orders }) => {
           onClick={()=> handleMarkAsCompleteButton(order.orderId)}>
             MARK AS COMPLETED
           </Button>)}
+          <Button variant='outlined' sx={{
+            maxHeight:'30px',
+            marginTop: '10px'
+          }}
+          onClick={()=> handleDispatchButton(order.orderId)}>
+            DISPATCH
+          </Button>
 
           <Dialog
         open={openDialog}
